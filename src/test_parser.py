@@ -1,8 +1,9 @@
 import unittest
-from parser import split_nodes_delimiter
+from parser import split_nodes_delimiter, extarct_markdown_links, extract_markdown_images
 from textnode import TextNode, TextType
 
 class test_parser(unittest.TestCase):
+    # split_nodes_delimiter
     def test_code(self):
         node = TextNode("This is text with a `code block` word", TextType.PLAINTEXT)
         new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
@@ -64,3 +65,29 @@ class test_parser(unittest.TestCase):
             TextNode("inline", TextType.CODE),
             TextNode(" sections", TextType.PLAINTEXT),
         ])
+
+    # extract_markdown_images
+    def test_extract_image(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_extract_image(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png), and here is ![another one](https://wallpapers.com/images/hd/beautiful-mountains-and-lake-2mpi93nx9sq4cot9.webp)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png"), ("another one", "https://wallpapers.com/images/hd/beautiful-mountains-and-lake-2mpi93nx9sq4cot9.webp")], matches)
+
+    # extract_markdown_links
+    def test_extract_link(self):
+        matches = extarct_markdown_links(
+            "This is text with a [link](https://www.google.com)"
+        )
+        self.assertEqual([("link", "https://www.google.com")], matches)
+    
+    def text_extract_multiple_links(self):
+        matches = extarct_markdown_links(
+            "This is text with a [link](https://www.google.com), and then [another one](https://www.tacobell.com)"
+        )
+        self.assertEqual([("link", "https://www.google.com"), ("another one", "https://www.tacobell.com")], matches)
