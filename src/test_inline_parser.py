@@ -1,8 +1,8 @@
 import unittest
-from parser import split_nodes_delimiter, extract_markdown_links, extract_markdown_images, split_nodes_image, split_nodes_link, text_to_textnodes
+from inline_parser import split_nodes_delimiter, extract_markdown_links, extract_markdown_images, split_nodes_image, split_nodes_link, text_to_textnodes
 from textnode import TextNode, TextType
 
-class test_parser(unittest.TestCase):
+class test_inline_parser(unittest.TestCase):
     # split_nodes_delimiter
     def test_code(self):
         node = TextNode("This is text with a `code block` word", TextType.PLAINTEXT)
