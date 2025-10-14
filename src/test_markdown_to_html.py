@@ -44,7 +44,7 @@ the **same** even with inline stuff
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><quote>This is text that <i>should</i> remain\nthe <b>same</b> even with inline stuff</quote></div>",
+            "<div><blockquote>This is text that <i>should</i> remain\nthe <b>same</b> even with inline stuff</blockquote></div>",
         )
     
     def test_ol(self):

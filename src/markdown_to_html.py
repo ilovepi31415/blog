@@ -54,9 +54,9 @@ def ul_to_html_node(block_text: str):
 def quote_to_html_node(block_text: str):
     lines = block_text.split('\n')
     for i in range(len(lines)):
-        lines[i] = re.sub(r'^>', '', lines[i])
+        lines[i] = re.sub(r'^>', '', lines[i]).strip()
     block_text = '\n'.join(lines)
-    return ParentNode('quote', text_to_children(block_text))
+    return ParentNode('blockquote', text_to_children(block_text))
 
 def paragraph_to_html_node(block_text: str):
     block_text = block_text.replace('\n', ' ')
