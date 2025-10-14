@@ -48,12 +48,20 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, 'w') as d:
         d.write(new_text)
 
+def generate_page_recursively(dir_path_content, template_path, dest_dir_path):
+    for path in os.listdir(dir_path_content):
+        if path.endswith('.md'):
+            generate_page(os.path.join(dir_path_content, path), template_path, os.path.join(dest_dir_path, path)[:-2] + 'html')
+        else:
+            os.makedirs(os.path.join(dest_dir_path, path), exist_ok=True)
+            generate_page_recursively(os.path.join(dir_path_content, path), template_path, os.path.join(dest_dir_path, path))
+
 
 def main():
     node = TextNode('hello world', TextType.PLAINTEXT, 'www.tacobell.com')
     print(node)
     copy_tree('static', 'public')
     print(extract_title('# howdy'))
-    generate_page('content/index.md', 'template.html', 'public/index.html')
+    generate_page_recursively('content', 'template.html', 'public')
 
 main()
