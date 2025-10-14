@@ -41,12 +41,12 @@ class ParentNode(HTMLNode):
             raise ValueError('ERROR: Missing tag')
         if self.children is None:
             raise ValueError('ERROR: Missing children')
-        html_rep = ''
-        html_rep += f'<{self.tag}{self.props_to_html()}>'
+        html_representation = ''
+        html_representation += f'<{self.tag}{self.props_to_html()}>'
         for child in self.children:
-            html_rep += child.to_html()
-        html_rep += f'</{self.tag}>'
-        return html_rep
+            html_representation += child.to_html()
+        html_representation += f'</{self.tag}>'
+        return html_representation
     
     def props_to_html(self):
         return super().props_to_html()

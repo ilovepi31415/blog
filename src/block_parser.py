@@ -3,11 +3,11 @@ import re
 
 class BlockType(Enum):
     HEADING = 'heading'
-    CODE = 'codeblock'
-    QUOTE = 'quoteblock'
-    ULIST = 'unordered list'
-    OLIST = 'ordered list'
-    PARAGRAPH = 'paragraph'
+    CODE = 'code'
+    QUOTE = 'quote'
+    ULIST = 'ul'
+    OLIST = 'ol'
+    PARAGRAPH = 'p'
 
 def markdown_to_blocks(markdown: str):
     blocks = []

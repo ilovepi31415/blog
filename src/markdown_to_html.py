@@ -1,0 +1,74 @@
+from block_parser import BlockType, block_to_block_type, markdown_to_blocks
+from inline_parser import text_to_textnodes
+from textnode import TextNode, TextType, text_node_to_html_node
+from htmlnode import LeafNode, ParentNode
+import re
+
+def markdown_to_html_node(markdown: str):
+    # Convert to blocks
+    blocks = markdown_to_blocks(markdown)
+    # Deal with each block
+    nodes = blocks_to_text_nodes(blocks)
+    # Makes blocks children of a div
+    return ParentNode('div', nodes)
+
+def blocks_to_text_nodes(blocks: list[str]):
+    block_nodes = []
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        match(block_type):
+            case BlockType.CODE:
+                block_nodes.append(code_to_html_node(block))
+            case BlockType.OLIST:
+                block_nodes.append(ol_to_html_node(block))
+            case BlockType.ULIST:
+                block_nodes.append(ul_to_html_node(block))
+            case BlockType.QUOTE:
+                block_nodes.append(quote_to_html_node(block))
+            case BlockType.PARAGRAPH:
+                block_nodes.append(paragraph_to_html_node(block))
+            case BlockType.HEADING:
+                block_nodes.append(heading_to_html_node(block))
+    return block_nodes
+
+def code_to_html_node(block_text: str):
+    block_text = block_text.strip('```')
+    block_text = block_text[1:] # Remove the leading \n for some reason
+    code_node = TextNode(block_text, TextType.CODE)
+    return ParentNode('pre', [text_node_to_html_node(code_node)])
+
+def ol_to_html_node(block_text: str):
+    lines = block_text.split('\n')
+    for line in lines:
+        re.sub(r'^\d+\. ', '', line)
+    block_text = '\n'.join(lines)
+    return ParentNode('ol', text_to_children(block_text))
+
+def ul_to_html_node(block_text: str):
+    lines = block_text.split('\n')
+    for line in lines:
+        re.sub(r'^- ', '', line)
+    block_text = '\n'.join(lines)
+    return ParentNode('ol', text_to_children(block_text))
+
+def quote_to_html_node(block_text: str):
+    lines = block_text.split('\n')
+    for line in lines:
+        re.sub(r'^>', '', line)
+    block_text = '\n'.join(lines)
+    return ParentNode('ol', text_to_children(block_text))
+
+def paragraph_to_html_node(block_text: str):
+    return ParentNode('p', text_to_children(block_text))
+
+def heading_to_html_node(block_text: str):
+    heading, body = block_text.split(' ', 1)
+    return ParentNode(f'h{len(heading)}', text_to_children(body))
+
+def text_to_children(text: str):
+    text = text.replace('\n', ' ')
+    text_nodes = text_to_textnodes(text)
+    html_nodes = []
+    for text_node in text_nodes:
+        html_nodes.append(text_node_to_html_node(text_node))
+    return html_nodes
