@@ -1,4 +1,7 @@
 class HTMLNode:
+    """
+    A Parent class for dealing with inline sections of HTML
+    """
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
@@ -9,6 +12,9 @@ class HTMLNode:
         raise NotImplementedError
     
     def props_to_html(self):
+        """
+        Converts a dict of properties into HTML
+        """
         prop_string = ''
         if self.props:
             for prop in self.props:
@@ -19,10 +25,16 @@ class HTMLNode:
         return f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})'
         
 class LeafNode(HTMLNode):
+    """
+    An HTMLNode with no children
+    """
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
     
     def to_html(self):
+        """
+        Represents itself as valid HTML text
+        """
         if self.value is None:
             raise ValueError(self)
         if self.tag is None:
@@ -33,10 +45,16 @@ class LeafNode(HTMLNode):
         return super().props_to_html()
 
 class ParentNode(HTMLNode):
+    """
+    An HTMLNode that handles children
+    """
     def __init__(self, tag, children: list[HTMLNode], props=None):
         super().__init__(tag, None, children, props)    
 
     def to_html(self):
+        """
+        Represents itself (and its children) as valid HTML text
+        """
         if self.tag is None:
             raise ValueError('ERROR: Missing tag')
         if self.children is None:

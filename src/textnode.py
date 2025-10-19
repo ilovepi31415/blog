@@ -17,6 +17,9 @@ class TextNode:
         self.url = url
     
     def __eq__(self, other: "TextNode"):
+        """
+        Defines equality of TextNodes to be having all matching properties
+        """
         return (
             self.text == other.text and
             self.text_type == other.text_type and
@@ -27,6 +30,9 @@ class TextNode:
         return f'TextNode({self.text}, {self.text_type.value}, {self.url})'
 
 def text_node_to_html_node(text_node: TextNode):
+    """
+    Converts TextNodes into HTMLNodes with tags based on the TextType
+    """
     match(text_node.text_type):
         case TextType.PLAINTEXT:
             return LeafNode(None, text_node.text)
