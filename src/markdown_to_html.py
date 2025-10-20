@@ -68,7 +68,7 @@ def ul_to_html_node(block_text: str):
     for i in range(len(lines)):
         lines[i] = '<li>' + re.sub(r'^- ', '', lines[i]) + '</li>'
     block_text = ''.join(lines)
-    return ParentNode('ol', text_to_children(block_text))
+    return ParentNode('ul', text_to_children(block_text))
 
 def quote_to_html_node(block_text: str):
     """
