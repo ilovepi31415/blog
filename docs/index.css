@@ -60,7 +60,7 @@ ol {
   padding-left: 30px;
 }
 
-code {
+code, blockquote {
   background-color: #3c3c42;
   border-radius: 6px;
   color: #e9c46a;
@@ -81,15 +81,9 @@ pre {
 }
 
 blockquote {
-  background-color: #2e2c35;
-  border-left: 4px solid #8d99ae;
-  padding-left: 2em;
-  margin-left: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  color: #ddd;
-  font-style: italic;
+  padding: 1.4em 1.6em;
+  margin: 2em 0;
+  box-shadow: 2px 2px 6px #000;
 }
 
 img {
@@ -127,4 +121,9 @@ img {
 
 ::-webkit-scrollbar-corner {
   background: #1f1c25;
+}
+
+/* for undoing the background of highlight.js */
+pre code.hljs {
+  background-color: transparent;
 }
